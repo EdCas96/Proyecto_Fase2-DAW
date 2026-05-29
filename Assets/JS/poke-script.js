@@ -32,9 +32,9 @@ function guardarUsuario() {
 // Módulo AngularJS
 var app = angular.module('pokeBank', []);
 
-app.controller('pokeController', ['$scope', function($scope) {
+app.controller('pokeController', ['$scope', function ($scope) {
     const vm = this;
-    
+
     // Inicializar datos del usuario (cargar desde localStorage)
     vm.persona = usuario;
     vm.cant_depo = null;
@@ -45,11 +45,11 @@ app.controller('pokeController', ['$scope', function($scope) {
     vm.monto_agua = null;
     vm.telefono = null;
     vm.monto_telefono = null;
-    
+
     // FUNCIÓN DEPOSITAR
-    vm.depositar = function() {
+    vm.depositar = function () {
         console.log("Función depositar ejecutada");
-        
+
         if (!vm.cant_depo || vm.cant_depo <= 0) {
             Swal.fire({
                 title: '¡Poke-Atención!',
@@ -59,7 +59,7 @@ app.controller('pokeController', ['$scope', function($scope) {
             });
             return;
         }
-        
+
         // Generar PDF (opcional)
         try {
             if (typeof jsPDF !== 'undefined') {
@@ -68,7 +68,7 @@ app.controller('pokeController', ['$scope', function($scope) {
                     if (img && img.src) {
                         doc.addImage(img, 'JPG', 150, 10, 40, 20);
                     }
-                } catch(e) {
+                } catch (e) {
                     console.log("Imagen no disponible");
                 }
                 doc.text("Hola " + usuario.name, 25, 25);
@@ -76,18 +76,18 @@ app.controller('pokeController', ['$scope', function($scope) {
                 doc.text(tiempo(), 25, 65);
                 doc.save("PokeDeposito.pdf");
             }
-        } catch(error) {
+        } catch (error) {
             console.error("Error al generar PDF:", error);
         }
-        
+
         // Actualizar fondos
         var montoDeposito = parseFloat(vm.cant_depo);
         usuario.fondos = parseFloat(usuario.fondos) + montoDeposito;
         vm.persona.fondos = usuario.fondos;
-        
+
         // Guardar en localStorage
         guardarUsuario();
-        
+
         // Agregar al historial
         usuario.historial.push({
             tipo: 'depósito',
@@ -96,7 +96,7 @@ app.controller('pokeController', ['$scope', function($scope) {
             saldo: usuario.fondos
         });
         guardarUsuario();
-        
+
         Swal.fire({
             title: '¡Depósito Exitoso!',
             html: `Has depositado <strong>$${montoDeposito.toFixed(2)}</strong><br>
@@ -108,22 +108,22 @@ app.controller('pokeController', ['$scope', function($scope) {
                 window.location.href = 'index.html';
             }
         });
-        
+
         vm.cant_depo = null;
     };
-    
+
     // FUNCIÓN RETIRAR (similar)
-    vm.retirar = function() {
+    vm.retirar = function () {
         if (!vm.cant_retiro || vm.cant_retiro <= 0) {
             Swal.fire('Error', 'Ingresa una cantidad válida', 'warning');
             return;
         }
-        
+
         if (parseFloat(vm.cant_retiro) > usuario.fondos) {
             Swal.fire('Error', 'Fondos insuficientes', 'error');
             return;
         }
-        
+
         // Generar PDF
         try {
             if (typeof jsPDF !== 'undefined') {
@@ -133,15 +133,15 @@ app.controller('pokeController', ['$scope', function($scope) {
                 doc.text(tiempo(), 25, 65);
                 doc.save("PokeRetiro.pdf");
             }
-        } catch(e) {
+        } catch (e) {
             console.log("PDF error:", e);
         }
-        
+
         // Actualizar fondos
         usuario.fondos = parseFloat(usuario.fondos) - parseFloat(vm.cant_retiro);
         vm.persona.fondos = usuario.fondos;
         guardarUsuario();
-        
+
         // Agregar al historial
         usuario.historial.push({
             tipo: 'retiro',
@@ -150,13 +150,13 @@ app.controller('pokeController', ['$scope', function($scope) {
             saldo: usuario.fondos
         });
         guardarUsuario();
-        
+
         Swal.fire('Éxito', 'Retiro de $' + vm.cant_retiro + ' realizado', 'success');
         vm.cant_retiro = null;
     };
-    
+
     // Función para consultar saldo (si la necesitas)
-    vm.consultarSaldo = function() {
+    vm.consultarSaldo = function () {
         Swal.fire({
             title: 'Consulta de Saldo',
             html: `Hola <strong>${usuario.name}</strong><br>
@@ -165,4 +165,9 @@ app.controller('pokeController', ['$scope', function($scope) {
             confirmButtonText: 'OK'
         });
     };
+    // Función global para reiniciar datos
+    function reiniciarDatos() {
+        localStorage.removeItem('usuarioPokemon');
+        location.reload();
+    }
 }]);
