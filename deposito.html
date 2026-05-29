@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Pokémon Bank | Depósito</title>
-      <link rel="stylesheet" href="Assets/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="Assets/CSS/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Assets/CSS/style.css">
@@ -22,17 +22,15 @@
             <div class="ms-auto d-none d-md-flex align-items-center text-white">
                 <div class="me-4">
                     <small class="text-secondary d-block">Entrenador</small>
-                    <!--<span class="fw-bold">ASH</span>-->
                     <span class="fw-bold">{{bank.persona.name}}</span>
                 </div>
                 <div class="me-4 border-start ps-4">
                     <small class="text-secondary d-block">No. Cuenta</small>
-                    <!--<<span class="fw-bold text-info">234567890</span>-->
-                    span class="fw-bold text-info">{{bank.persona.cuenta}}</span>
+                    <!-- CORREGIDO: faltaba el < en span -->
+                    <span class="fw-bold text-info">{{bank.persona.cuenta}}</span>
                 </div>
                 <div class="border-start ps-4">
                     <small class="text-secondary d-block">Saldo Disponible</small>
-                    <!--<span class="fw-bold text-success">$5000</span>-->
                     <span class="fw-bold text-success">{{bank.persona.fondos | currency}}</span>
                 </div>
             </div>
@@ -59,7 +57,8 @@
                     <p class="text-secondary">Ingresa el monto que deseas añadir a tu cuenta.</p>
                 </div>
 
-                <form name="formulario" novalidate>
+                <!-- CORREGIDO: ng-submit para manejar el envío del formulario -->
+                <form name="formulario" ng-submit="formulario.$valid && bank.depositar()" novalidate>
                     <div class="mb-4">
                         <label for="cant_depo" class="form-label text-warning fw-semibold">Cantidad a depositar</label>
                         <div class="input-group input-group-lg">
@@ -67,9 +66,15 @@
                             <input type="number" 
                                    class="form-control bg-dark text-white border-secondary" 
                                    id="cant_depo" 
+                                   name="cant_depo"
                                    placeholder="0.00" 
-                                   ng-model="bank.montoDeposito"
+                                   ng-model="bank.cant_depo"
+                                   min="0.01"
+                                   step="0.01"
                                    required>
+                        </div>
+                        <div class="text-danger" ng-show="formulario.cant_depo.$touched && formulario.cant_depo.$invalid">
+                            <small>Por favor ingresa un monto válido mayor a 0</small>
                         </div>
                         <div class="form-text text-secondary text-end mt-1">
                             * El monto se reflejará instantáneamente en tu saldo.
@@ -79,7 +84,7 @@
                     <div class="d-grid gap-3 mt-5">
                         <button type="submit" 
                                 class="btn btn-warning btn-lg fw-bold py-3 shadow" 
-                                ng-click="bank.depositar()">
+                                ng-disabled="formulario.$invalid">
                             <i class="fas fa-check-circle me-2"></i> Confirmar Poke-Depósito
                         </button>
                         
@@ -89,6 +94,14 @@
                     </div>
                 </form>
 
+                <!-- Mensaje de carga mientras se obtienen los datos -->
+                <div ng-if="bank.cargando" class="text-center text-white mt-3">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando datos...
+                </div>
+                <div ng-if="bank.error" class="alert alert-danger mt-3">
+                    {{bank.mensajeError}}
+                </div>
+
             </section>
         </div>
 
@@ -97,6 +110,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.3/jspdf.umd.min.js"></script>
     
     <script src="Assets/JS/poke-script.js"></script>
 

@@ -46,14 +46,14 @@ var usuario = {
                 return;
             }
             
-            var doc = new jsPDF();
-            if(img.complete) {
-                doc.addImage(img, 'JPG', 150, 10, 50, 20);
-            }
-            doc.text("Hola " + usuario.name, 25, 25);
-            doc.text("Has depositado $" + vm.cant_depo + " a la Poke-Cuenta numero " + usuario.cuenta, 25, 50);
-            doc.text(tiempo(), 25, 65);
-            doc.save("PokeDeposito.pdf");
+            //var doc = new jsPDF();
+            //if(img.complete) {
+            //    doc.addImage(img, 'JPG', 150, 10, 50, 20);
+           // }
+            //doc.text("Hola " + usuario.name, 25, 25);
+            //doc.text("Has depositado $" + vm.cant_depo + " a la Poke-Cuenta numero " + usuario.cuenta, 25, 50);
+            //doc.text(tiempo(), 25, 65);
+           // doc.save("PokeDeposito.pdf"); 
             
             // Aumentando fondos
             usuario.fondos = parseFloat(usuario.fondos) + parseFloat(vm.cant_depo);
