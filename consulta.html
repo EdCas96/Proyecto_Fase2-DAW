@@ -48,16 +48,16 @@
                 <div class="bg-dark p-4 rounded-3 border border-secondary mb-4 shadow-inner">
                     <small class="text-uppercase text-warning fw-bold spacing-1" style="letter-spacing: 2px;">Saldo Actual</small>
                     <div class="display-4 fw-bold text-success mt-2">
-                        <!--{{bank.persona.fondos | currency}}-->
-                        $5000
+                        {{bank.persona.fondos | currency}}
+                        
                     </div>
                 </div>
 
                 <div class="row text-start mb-5">
                     <div class="col-6">
                         <small class="text-secondary d-block">Número de Cuenta</small>
-                        <span class="text-white">76543223456</span>
-                        <!--<span class="text-white">{{bank.persona.cuenta}}</span>-->
+                        <!--<span class="text-white">76543223456</span>-->
+                        <span class="text-white">{{bank.persona.cuenta}}</span>
                     </div>
                     <div class="col-6 text-end">
                         <small class="text-secondary d-block">Tipo de Cuenta</small>
@@ -86,7 +86,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <!--<script src="Assets/JS/poke-script.js"></script>-->
+    <script src="Assets/JS/poke-script.js"></script>
     
 </body>
 </html>
