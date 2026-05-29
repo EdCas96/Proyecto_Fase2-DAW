@@ -1,0 +1,113 @@
+:root {
+    --poke-yellow: #FFCB05;
+    --poke-blue: #2A75BB;
+    --dark-bg: #121212;
+    --glass-card: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('../IMG/pikachu2.gif') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    min-height: 100vh;
+}
+
+/* Navbar Moderna */
+.navbar-custom {
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--poke-yellow);
+    padding: 1rem 2rem;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+.nav-link b { color: var(--poke-yellow); }
+
+/* Contenedor Principal */
+.main-container {
+    padding-top: 120px;
+    padding-bottom: 50px;
+}
+
+/* Tarjetas de Acciones (Index) */
+.action-card {
+    background: var(--glass-card);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 30px;
+    transition: 0.3s;
+    text-align: center;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
+
+.action-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-10px);
+    border-color: var(--poke-yellow);
+    color: var(--poke-yellow);
+}
+
+.action-card i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+/* Formularios (Depósitos, Retiros, etc.) */
+.form-section {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 25px;
+    border: 1px solid var(--glass-border);
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: white !important;
+    padding: 12px;
+}
+
+.form-control:focus {
+    border-color: var(--poke-yellow) !important;
+    box-shadow: 0 0 10px rgba(255, 203, 5, 0.2);
+}
+
+/* Botones */
+.btn-poke {
+    background: var(--poke-yellow);
+    color: black;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 12px 30px;
+    border: none;
+}
+
+.btn-back {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    margin-top: 20px;
+}
+
+.btn-back:hover {
+    background: white;
+    color: black;
+}

@@ -1,0 +1,112 @@
+:root {
+    --poke-yellow: #FFCB05;
+    --poke-blue: #2A75BB;
+    --dark-bg: #1a1a1a;
+    --glass-bg: rgba(29, 29, 29, 0.85);
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                url('../IMG/pikachu1.gif') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+}
+
+.login-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 203, 5, 0.3);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.bank-title {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--poke-yellow);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.user-img {
+    margin-top: -90px;
+    margin-bottom: 20px;
+}
+
+.user-img img {
+    height: 110px;
+    width: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--poke-yellow);
+    box-shadow: 0 0 20px rgba(255, 203, 5, 0.5);
+    background-color: white;
+}
+
+/* Estilo del Input */
+.input-group {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: 0.3s;
+}
+
+.input-group:focus-within {
+    border-color: var(--poke-yellow);
+    box-shadow: 0 0 10px rgba(255, 203, 5, 0.3);
+}
+
+.input-group-text {
+    background: transparent;
+    border: none;
+    color: var(--poke-yellow);
+    padding-left: 20px;
+}
+
+.form-control {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    font-size: 1.2rem;
+    letter-spacing: 5px;
+    text-align: center;
+    padding: 12px;
+}
+
+.form-control::placeholder {
+    color: rgba(255,255,255,0.3);
+    letter-spacing: normal;
+}
+
+/* Botón Estilo Poké-Ball */
+.btn-login {
+    background: var(--poke-yellow);
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 10px;
+    padding: 12px;
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-login:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 203, 5, 0.4);
+    color: #000;
+}

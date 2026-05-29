@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="pokeBank">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Pokémon Bank | Depósito</title>
+      <link rel="stylesheet" href="Assets/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Assets/CSS/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-controller="pokeController as bank">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top border-bottom border-warning shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-warning" href="index.html">
+                <i class="fas fa-university me-2"></i>POKÉ-BANK
+            </a>
+            
+            <div class="ms-auto d-none d-md-flex align-items-center text-white">
+                <div class="me-4">
+                    <small class="text-secondary d-block">Entrenador</small>
+                    <span class="fw-bold">ASH</span>
+                    <!--<span class="fw-bold">{{bank.persona.name}}</span>-->
+                </div>
+                <div class="me-4 border-start ps-4">
+                    <small class="text-secondary d-block">No. Cuenta</small>
+                    <span class="fw-bold text-info">234567890</span>
+                    <!--<span class="fw-bold text-info">{{bank.persona.cuenta}}</span>-->
+                </div>
+                <div class="border-start ps-4">
+                    <small class="text-secondary d-block">Saldo Disponible</small>
+                    <span class="fw-bold text-success">$5000</span>
+                    <!--<span class="fw-bold text-success">{{bank.persona.fondos | currency}}</span>-->
+                </div>
+            </div>
+
+            <div class="ms-4">
+                <button class="btn btn-outline-danger btn-sm" onclick="location.href='login.html'">
+                    <i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline">Salir</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container d-flex align-items-center justify-content-center" style="min-height: 100vh; padding-top: 80px;">
+        
+        <div class="col-12 col-md-8 col-lg-6">
+            <section class="form-section p-4 p-md-5 rounded-4 shadow-lg" 
+                     style="background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(15px); border: 1px solid rgba(255, 203, 5, 0.2);">
+                
+                <div class="text-center mb-4">
+                    <div class="display-4 text-warning mb-2">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h1 class="h3 fw-bold text-white">Realizar Depósito</h1>
+                    <p class="text-secondary">Ingresa el monto que deseas añadir a tu cuenta.</p>
+                </div>
+
+                <form name="formulario" novalidate>
+                    <div class="mb-4">
+                        <label for="cant_depo" class="form-label text-warning fw-semibold">Cantidad a depositar</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-dark border-secondary text-warning fw-bold">$</span>
+                            <input type="number" 
+                                   class="form-control bg-dark text-white border-secondary" 
+                                   id="cant_depo" 
+                                   placeholder="0.00" 
+                                   ng-model="bank.montoDeposito"
+                                   required>
+                        </div>
+                        <div class="form-text text-secondary text-end mt-1">
+                            * El monto se reflejará instantáneamente en tu saldo.
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-3 mt-5">
+                        <button type="submit" 
+                                class="btn btn-warning btn-lg fw-bold py-3 shadow" 
+                                ng-click="bank.depositar()">
+                            <i class="fas fa-check-circle me-2"></i> Confirmar Poke-Depósito
+                        </button>
+                        
+                        <a href="index.html" class="btn btn-outline-light btn-lg border-opacity-25 py-2">
+                            <i class="fas fa-arrow-left me-2"></i> Regresar al menú
+                        </a>
+                    </div>
+                </form>
+
+            </section>
+        </div>
+
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!--<script src="Assets/JS/poke-script.js"></script>-->
+
+</body>
+</html>
