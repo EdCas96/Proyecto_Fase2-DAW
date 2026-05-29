@@ -1,4 +1,4 @@
-swal.fire({
+Swal.fire({
     title: 'Bienvenido Eduardo Castro',
     icon: 'question',
     confirmButtonText: 'Poke-Gracias!',
