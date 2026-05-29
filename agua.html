@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="pokeBank">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Pokémon Bank | Pago de Agua Potable</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Assets/CSS/style.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-controller="pokeController as bank">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top border-bottom border-warning shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-warning" href="index.html">
+                <i class="fas fa-tint me-2"></i>POKÉ-BANK
+            </a>
+            <div class="ms-auto d-flex align-items-center text-white">
+                <div class="me-4 d-none d-md-block">
+                    <small class="text-secondary d-block">Entrenador</small>
+                    <span class="fw-bold">{{bank.persona.name}}</span>
+                </div>
+                <div class="me-4 border-start ps-4 d-none d-sm-block">
+                    <small class="text-secondary d-block">Saldo Disponible</small>
+                    <span class="fw-bold text-success">{{bank.persona.fondos | currency}}</span>
+                </div>
+                <button class="btn btn-outline-danger btn-sm ms-2" onclick="location.href='login.html'">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container d-flex align-items-center justify-content-center" style="min-height: 100vh; padding-top: 80px;">
+        
+        <div class="col-12 col-md-8 col-lg-6">
+            <section class="form-section p-4 p-md-5 rounded-4 shadow-lg" 
+                     style="background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(0, 255, 255, 0.3);">
+                
+                <div class="text-center mb-4">
+                    <div class="display-3 text-info mb-3">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h1 class="h2 fw-bold text-white">Pago de Agua Potable</h1>
+                    <p class="text-secondary">Paga tu factura de agua con Squirtle Water</p>
+                </div>
+
+                <form name="formularioAgua" ng-submit="formularioAgua.$valid && bank.pagarAgua()" novalidate>
+                    
+                    <!-- Campo NPE (Número de Predio) -->
+                    <div class="mb-4">
+                        <label for="NPE" class="form-label text-info fw-semibold">
+                            <i class="fas fa-map-marker-alt me-1"></i> Número de Predio (NPE)
+                        </label>
+                        <input type="text" 
+                               class="form-control form-control-lg bg-dark text-white border-secondary" 
+                               id="NPE" 
+                               name="NPE"
+                               placeholder="Ej: 123456789" 
+                               ng-model="bank.NPE"
+                               ng-minlength="5"
+                               ng-maxlength="15"
+                               required>
+                        <div class="text-danger mt-1" ng-show="formularioAgua.NPE.$touched && formularioAgua.NPE.$invalid">
+                            <small ng-show="formularioAgua.NPE.$error.required">
+                                <i class="fas fa-exclamation-circle"></i> El número de predio es obligatorio
+                            </small>
+                            <small ng-show="formularioAgua.NPE.$error.minlength">
+                                <i class="fas fa-exclamation-circle"></i> El NPE debe tener al menos 5 caracteres
+                            </small>
+                        </div>
+                        <div class="form-text text-secondary">
+                            <small>El NPE se encuentra en tu recibo de agua</small>
+                        </div>
+                    </div>
+
+                    <!-- Campo Lectura Anterior -->
+                    <div class="mb-3">
+                        <label for="lectura_anterior" class="form-label text-info fw-semibold">
+                            <i class="fas fa-chart-line me-1"></i> Lectura Anterior (m³)
+                        </label>
+                        <input type="number" 
+                               class="form-control bg-dark text-white border-secondary" 
+                               id="lectura_anterior" 
+                               name="lectura_anterior"
+                               placeholder="Ej: 150" 
+                               ng-model="bank.lectura_anterior"
+                               min="0"
+                               step="1"
+                               required>
+                        <div class="text-danger mt-1" ng-show="formularioAgua.lectura_anterior.$touched && formularioAgua.lectura_anterior.$invalid">
+                            <small ng-show="formularioAgua.lectura_anterior.$error.required">
+                                <i class="fas fa-exclamation-circle"></i> La lectura anterior es obligatoria
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Campo Lectura Actual -->
+                    <div class="mb-4">
+                        <label for="lectura_actual" class="form-label text-info fw-semibold">
+                            <i class="fas fa-tachometer-alt me-1"></i> Lectura Actual (m³)
+                        </label>
+                        <input type="number" 
+                               class="form-control bg-dark text-white border-secondary" 
+                               id="lectura_actual" 
+                               name="lectura_actual"
+                               placeholder="Ej: 180" 
+                               ng-model="bank.lectura_actual"
+                               min="0"
+                               step="1"
+                               required>
+                        <div class="text-danger mt-1" ng-show="formularioAgua.lectura_actual.$touched && formularioAgua.lectura_actual.$invalid">
+                            <small ng-show="formularioAgua.lectura_actual.$error.required">
+                                <i class="fas fa-exclamation-circle"></i> La lectura actual es obligatoria
+                            </small>
+                        </div>
+                        <div class="text-warning mt-1" ng-show="bank.lectura_actual && bank.lectura_anterior && bank.lectura_actual <= bank.lectura_anterior">
+                            <small>
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                La lectura actual debe ser mayor que la lectura anterior
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Campo Monto (calculado automáticamente) -->
+                    <div class="mb-4">
+                        <label for="monto_agua" class="form-label text-info fw-semibold">
+                            <i class="fas fa-dollar-sign me-1"></i> Monto a Pagar
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-dark border-secondary text-info fw-bold">$</span>
+                            <input type="number" 
+                                   class="form-control bg-dark text-white border-secondary" 
+                                   id="monto_agua" 
+                                   name="monto_agua"
+                                   placeholder="0.00" 
+                                   ng-model="bank.monto_agua"
+                                   ng-readonly="true"
+                                   step="0.01"
+                                   required>
+                        </div>
+                        <div class="form-text text-secondary mt-1">
+                            <small>* El monto se calcula automáticamente según el consumo</small>
+                        </div>
+                        <!-- Botón para calcular -->
+                        <button type="button" 
+                                class="btn btn-outline-info btn-sm mt-2 w-100" 
+                                ng-click="bank.calcularMontoAgua()"
+                                ng-disabled="!bank.lectura_actual || !bank.lectura_anterior || bank.lectura_actual <= bank.lectura_anterior">
+                            <i class="fas fa-calculator me-1"></i> Calcular Monto
+                        </button>
+                    </div>
+
+                    <!-- Info de la empresa -->
+                    <div class="mb-4 p-3 rounded-3" style="background: rgba(0, 255, 255, 0.1); border: 1px solid #00ffff;">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-tint text-info fa-2x me-3"></i>
+                            <div>
+                                <small class="text-secondary d-block">Empresa proveedora</small>
+                                <span class="text-info fw-bold">Squirtle Water S.A.</span>
+                                <small class="text-secondary d-block mt-1">Comprometidos con el agua limpia</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen del pago -->
+                    <div class="mb-4 p-3 rounded-3 bg-dark" ng-show="bank.NPE && bank.monto_agua && bank.monto_agua > 0">
+                        <small class="text-secondary">Resumen del pago</small>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span>Número de Predio:</span>
+                            <span class="text-white fw-bold">{{bank.NPE}}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span>Consumo (m³):</span>
+                            <span class="text-white fw-bold">{{bank.lectura_actual - bank.lectura_anterior}} m³</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span>Monto a pagar:</span>
+                            <span class="text-info fw-bold">{{bank.monto_agua | currency}}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span>Saldo después del pago:</span>
+                            <span class="text-success fw-bold">{{bank.persona.fondos - bank.monto_agua | currency}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-grid gap-3 mt-4">
+                        <button type="submit" 
+                                class="btn btn-info btn-lg fw-bold py-3 shadow" 
+                                ng-disabled="formularioAgua.$invalid || !bank.monto_agua || bank.monto_agua <= 0 || bank.monto_agua > bank.persona.fondos">
+                            <i class="fas fa-tint me-2"></i> Confirmar Pago de Agua
+                        </button>
+                        
+                        <a href="servicios.html" class="btn btn-outline-light py-2">
+                            <i class="fas fa-arrow-left me-2"></i> Cancelar y volver
+                        </a>
+                    </div>
+                </form>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script src="Assets/JS/poke-script.js"></script>
+
+</body>
+</html>
