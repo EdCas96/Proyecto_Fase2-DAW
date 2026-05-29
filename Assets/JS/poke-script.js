@@ -1,4 +1,4 @@
-function tiempo(impresion){
+function tiempo(impresion) {
     var date = new Date();
     var impresion = date + " SV";
     return impresion;
@@ -17,13 +17,13 @@ var usuario = {
     historial: []
 };
 
-(function(){
-    var app = angular.module('pokeBank', []);    
-    
-    app.controller('pokeController', ['$scope', function($scope){
+(function () {
+    var app = angular.module('pokeBank', []);
+
+    app.controller('pokeController', ['$scope', function ($scope) {
         const vm = this;
         vm.persona = usuario;
-        
+
         // Inicializar variables
         vm.cant_depo = '';
         vm.cant_retiro = '';
@@ -33,38 +33,76 @@ var usuario = {
         vm.monto_agua = '';
         vm.telefono = '';
         vm.monto_telefono = '';
-        
+
         // FUNCION DEPOSITAR
-        vm.depositar = function(){
-            if(!vm.cant_depo || vm.cant_depo == ''){
+        vm.depositar = function () {
+            console.log("Función depositar ejecutada");
+
+            // Validaciones
+            if (!vm.cant_depo || vm.cant_depo <= 0) {
                 Swal.fire({
                     title: '¡Poke-Atención!',
-                    text: 'No has definido la cantidad a depositar',
+                    text: 'Por favor ingresa una cantidad válida para depositar',
                     icon: 'warning',
                     confirmButtonText: 'Intentar'
                 });
                 return;
             }
-            
-            //var doc = new jsPDF();
-            //if(img.complete) {
-            //    doc.addImage(img, 'JPG', 150, 10, 50, 20);
-           // }
-            //doc.text("Hola " + usuario.name, 25, 25);
-            //doc.text("Has depositado $" + vm.cant_depo + " a la Poke-Cuenta numero " + usuario.cuenta, 25, 50);
-            //doc.text(tiempo(), 25, 65);
-           // doc.save("PokeDeposito.pdf"); 
-            
-            // Aumentando fondos
-            usuario.fondos = parseFloat(usuario.fondos) + parseFloat(vm.cant_depo);
-            vm.persona.fondos = usuario.fondos;  // Actualizar vista
-            Swal.fire('Éxito', 'Depósito realizado con éxito', 'success');
-            vm.cant_depo = '';  // Limpia el input
+
+            // --- GENERAR PDF (manejando errores) ---
+            try {
+                // Verificar si jsPDF está disponible
+                if (typeof jsPDF !== 'undefined') {
+                    var doc = new jsPDF();
+
+                    // Intentar agregar imagen (opcional, si existe)
+                    try {
+                        if (img && img.src) {
+                            doc.addImage(img, 'JPG', 150, 10, 40, 20);
+                        }
+                    } catch (e) {
+                        console.log("Imagen no disponible, continuando sin ella");
+                    }
+
+                    // Agregar contenido al PDF
+                    doc.text("Hola " + usuario.name, 25, 25);
+                    doc.text("Has depositado $" + vm.cant_depo + " a la Poke-Cuenta numero " + usuario.cuenta, 25, 50);
+                    doc.text(tiempo(), 25, 65);
+                    doc.save("PokeDeposito.pdf");
+                    console.log("PDF generado exitosamente");
+                } else {
+                    console.warn("jsPDF no está disponible");
+                }
+            } catch (error) {
+                console.error("Error al generar PDF:", error);
+                // No detenemos la ejecución - el depósito sigue funcionando
+            }
+
+            // --- ACTUALIZAR FONDOS ---
+            var montoDeposito = parseFloat(vm.cant_depo);
+            usuario.fondos = parseFloat(usuario.fondos) + montoDeposito;
+            vm.persona.fondos = usuario.fondos;
+
+            // --- MOSTAR ÉXITO ---
+            Swal.fire({
+                title: '¡Depósito Exitoso!',
+                html: `Has depositado <strong>$${montoDeposito.toFixed(2)}</strong><br>
+               Nuevo saldo: <strong>$${usuario.fondos.toFixed(2)}</strong>`,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'index.html';
+                }
+            });
+
+            // Limpiar input
+            vm.cant_depo = null;
         };
-        
+
         // FUNCION RETIRAR
-        vm.retirar = function(){
-            if(!vm.cant_retiro || vm.cant_retiro == ''){
+        vm.retirar = function () {
+            if (!vm.cant_retiro || vm.cant_retiro == '') {
                 Swal.fire({
                     title: '¡Poke-Atención!',
                     text: 'No has definido la cantidad a retirar',
@@ -73,98 +111,98 @@ var usuario = {
                 });
                 return;
             }
-            
-            if(parseFloat(vm.cant_retiro) > usuario.fondos) {
+
+            if (parseFloat(vm.cant_retiro) > usuario.fondos) {
                 Swal.fire('Error', 'Fondos insuficientes', 'error');
                 return;
             }
-            
+
             var doc = new jsPDF();
-            if(img.complete) {
+            if (img.complete) {
                 doc.addImage(img, 'JPG', 150, 10, 50, 20);
             }
             doc.text("Hola " + usuario.name, 25, 25);
             doc.text("Has retirado $" + vm.cant_retiro + " de la Poke-Cuenta numero " + usuario.cuenta, 25, 50);
             doc.text(tiempo(), 25, 65);
             doc.save("PokeRetiro.pdf");
-            
+
             usuario.fondos = parseFloat(usuario.fondos) - parseFloat(vm.cant_retiro);
             vm.persona.fondos = usuario.fondos;
             Swal.fire('Éxito', 'Retiro realizado con éxito', 'success');
             vm.cant_retiro = '';
         };
-        
+
         // FUNCION PAGO ENERGÍA
-        vm.pagar_energia = function(){
-            if(!vm.NIC){
+        vm.pagar_energia = function () {
+            if (!vm.NIC) {
                 Swal.fire('Error', 'No has definido el NIC', 'warning');
                 return;
             }
-            if(!vm.monto_energia){
+            if (!vm.monto_energia) {
                 Swal.fire('Error', 'No has definido el monto', 'warning');
                 return;
             }
-            
+
             var doc = new jsPDF();
-            if(img.complete) doc.addImage(img, 'JPG', 150, 10, 50, 20);
+            if (img.complete) doc.addImage(img, 'JPG', 150, 10, 50, 20);
             doc.text("Hola " + usuario.name, 25, 25);
             doc.text("Has pagado la energia electrica que te brinda Pikachu,", 25, 50);
             doc.text("mediante el NIC " + vm.NIC + " por un costo de $" + vm.monto_energia, 25, 60);
             doc.text(tiempo(), 25, 90);
             doc.save("PokePago-Energia.pdf");
-            
+
             usuario.fondos = parseFloat(usuario.fondos) - parseFloat(vm.monto_energia);
             vm.persona.fondos = usuario.fondos;
             Swal.fire('Éxito', 'Pago de energía realizado', 'success');
             vm.NIC = '';
             vm.monto_energia = '';
         };
-        
+
         // FUNCION PAGAR AGUA
-        vm.pagar_agua = function(){
-            if(!vm.NPE){
+        vm.pagar_agua = function () {
+            if (!vm.NPE) {
                 Swal.fire('Error', 'No has definido el NPE', 'warning');
                 return;
             }
-            if(!vm.monto_agua){
+            if (!vm.monto_agua) {
                 Swal.fire('Error', 'No has definido el monto', 'warning');
                 return;
             }
-            
+
             var doc = new jsPDF();
-            if(img.complete) doc.addImage(img, 'JPG', 150, 10, 50, 20);
+            if (img.complete) doc.addImage(img, 'JPG', 150, 10, 50, 20);
             doc.text("Hola " + usuario.name, 25, 25);
             doc.text("Has pagado el agua que te brinda Squirtle,", 25, 50);
             doc.text("mediante el NPE " + vm.NPE + " por un costo de $" + vm.monto_agua, 25, 60);
             doc.text(tiempo(), 25, 90);
             doc.save("PokePago-Agua.pdf");
-            
+
             usuario.fondos = parseFloat(usuario.fondos) - parseFloat(vm.monto_agua);
             vm.persona.fondos = usuario.fondos;
             Swal.fire('Éxito', 'Pago de agua realizado', 'success');
             vm.NPE = '';
             vm.monto_agua = '';
         };
-        
+
         // FUNCION PAGAR TELEFONIA
-        vm.pagar_telefonia = function(){
-            if(!vm.telefono){
+        vm.pagar_telefonia = function () {
+            if (!vm.telefono) {
                 Swal.fire('Error', 'No has definido el número', 'warning');
                 return;
             }
-            if(!vm.monto_telefono){
+            if (!vm.monto_telefono) {
                 Swal.fire('Error', 'No has definido el monto', 'warning');
                 return;
             }
-            
+
             var doc = new jsPDF();
-            if(img.complete) doc.addImage(img, 'JPG', 150, 10, 50, 20);
+            if (img.complete) doc.addImage(img, 'JPG', 150, 10, 50, 20);
             doc.text("Hola " + usuario.name, 25, 25);
             doc.text("Has pagado el consumo de tu Pokédesk,", 25, 50);
             doc.text("mediante el Número Telefónico " + vm.telefono + " por un costo de $" + vm.monto_telefono, 25, 60);
             doc.text(tiempo(), 25, 90);
             doc.save("PokePago-Telefono.pdf");
-            
+
             usuario.fondos = parseFloat(usuario.fondos) - parseFloat(vm.monto_telefono);
             vm.persona.fondos = usuario.fondos;
             Swal.fire('Éxito', 'Pago de telefonía realizado', 'success');
@@ -178,10 +216,10 @@ var usuario = {
 function login() {
     var pin = document.getElementById('PIN');
     var PIN = pin.value;
-    
-    if(PIN == '1234'){
+
+    if (PIN == '1234') {
         document.location.href = "index.html";
-    } else if(PIN == ''){
+    } else if (PIN == '') {
         Swal.fire({
             title: '¡Atención!',
             text: 'El campo PIN no puede quedar vacío',
