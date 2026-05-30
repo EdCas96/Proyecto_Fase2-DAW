@@ -29,6 +29,40 @@ function guardarUsuario() {
     localStorage.setItem('usuarioPokemon', JSON.stringify(usuario));
 }
 
+// Función de login — valida el PIN contra localStorage
+function login() {
+    var pinIngresado = document.getElementById('PIN').value;
+
+    if (!pinIngresado || pinIngresado.trim() === '') {
+        Swal.fire({
+            title: '¡Poke-Atención!',
+            text: 'Por favor ingresa tu PIN de entrenador',
+            icon: 'warning',
+            confirmButtonText: 'Intentar'
+        });
+        return;
+    }
+
+    var pinCorrecto = usuario ? usuario.pin : '1234';
+
+    if (pinIngresado === pinCorrecto) {
+        window.location.href = 'index.html';
+    } else {
+        Swal.fire({
+            title: '¡PIN Incorrecto!',
+            text: 'PIN incorrecto, intenta nuevamente',
+            icon: 'error',
+            confirmButtonText: 'Intentar de nuevo'
+        });
+    }
+}
+
+// Función global para reiniciar datos (accesible desde onclick en el HTML)
+function reiniciarDatos() {
+    localStorage.removeItem('usuarioPokemon');
+    location.reload();
+}
+
 // Módulo AngularJS
 var app = angular.module('pokeBank', []);
 
@@ -258,12 +292,6 @@ app.controller('pokeController', ['$scope', function ($scope) {
 
     // Llamar a calcular estadísticas al iniciar
     vm.calcularEstadisticas();
-
-    // Función global para reiniciar datos
-    function reiniciarDatos() {
-        localStorage.removeItem('usuarioPokemon');
-        location.reload();
-    }
 
     // FUNCIÓN PAGAR ENERGÍA
     vm.pagarEnergia = function () {
