@@ -14,10 +14,10 @@ var usuario = JSON.parse(localStorage.getItem('usuarioPokemon'));
 if (!usuario) {
     // Si no existe en localStorage, crear el usuario por defecto
     usuario = {
-        name: 'Eduardo Castro',
+        name: 'Ash Ketchum',
         pin: '1234',
-        cuenta: '0487654521',
-        fondos: 700,
+        cuenta: '0987654321',
+        fondos: 500,
         historial: []
     };
     // Guardar en localStorage
