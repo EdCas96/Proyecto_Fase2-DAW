@@ -46,7 +46,7 @@ function login() {
     var pinCorrecto = usuario ? usuario.pin : '1234';
 
     if (pinIngresado === pinCorrecto) {
-        window.location.href = 'index.html';
+        window.location.href = 'dashboard.html';
     } else {
         Swal.fire({
             title: '¡PIN Incorrecto!',
@@ -142,7 +142,7 @@ app.controller('pokeController', ['$scope', function ($scope) {
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html';
             }
         });
 
@@ -201,7 +201,7 @@ app.controller('pokeController', ['$scope', function ($scope) {
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html';
             }
         });
 
